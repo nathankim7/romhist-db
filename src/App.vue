@@ -1,11 +1,10 @@
 <template>
-  <div id="app" class="flex flex-column h-100">
+  <div class="app flex flex-column h-100">
     <nav class="pa3 p4-ns">
-      <router-link v-bind:to="'/'" exact class="link dim black b f6 f5-ns dib mr3 hover-purple" title="Romhist">Romhist</router-link>
+      <router-link v-bind:to="'/'" exact class="link dim black b f6 f5-ns dib mr3 hover-purple" title="Landing">Search</router-link>
       <router-link v-bind:to="'/people'" exact class="link dim gray f6 f5-ns dib mr3 hover-purple" title="People">People</router-link>
       <router-link v-bind:to="'/timeline'" exact class="link dim gray f6 f5-ns dib mr3 hover-purple" title="Timeline">Timeline</router-link>
     </nav>
-
     <div id="main" class="fl w-100 ph3 bt b--black-10">
       <router-view/>
     </div>
@@ -13,13 +12,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'app'
-  }
+export default {
+  name: "app"
+};
 </script>
 
 <style>
-
 #main {
   flex: 1;
 }
@@ -55,7 +53,7 @@ body {
 }
 
 .link:hover, .link:focus {
-  color: #5E2CA5
+  color: #5e2ca5;
 }
 
 html {
@@ -63,10 +61,7 @@ html {
   height: 100%;
 }
 
-*,
-*:before,
-*:after {
+*, *:before, *:after {
   box-sizing: inherit;
 }
-
 </style>

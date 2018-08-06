@@ -24,7 +24,7 @@ import CustomLink from './CustomLink.vue'
 
 const PEOPLE_QUERY = gql `
 query PeopleSearch($nameF: String) {
-    people(name_contains: $nameF) {
+    people(nameF: $nameF) {
         id
         name
     }
@@ -32,7 +32,7 @@ query PeopleSearch($nameF: String) {
 
 const YEARS_QUERY = gql `
 query YearsSearch($nameF: String) {
-    timeline(name_contains: $nameF) {
+    timeline(nameF: $nameF) {
         id
         name
     }
@@ -52,13 +52,13 @@ export default {
                 return { nameF: this.$route.params.nameF }
             }
         },
-        timeline: {
+        /*timeline: {
             query: YEARS_QUERY,
             loadingKey: 'loading',
             variables() {
                 return { nameF: this.$route.params.nameF }
             }
-        }
+        }*/
     },
     components: { CustomLink }
 }

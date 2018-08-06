@@ -10,8 +10,8 @@
                 <div class="h-100 pr3">
                     <h1 class="mt4 mb3">{{plural}}</h1>
                     <ul class="pl3 mv3">
-                        <li v-for="thing in things" :key="(thing.val ? thing.val : thing.id)">
-                            <router-link :to="{ name: single, params: { id: thing.id } }" class="f3 lh-copy link black-60">{{thing.name}}</router-link>
+                        <li v-for="thing in things" :key="thing.id">
+                            <router-link :to="{ name: single, params: { id: thing.id } }" class="f3 lh-copy link black-60">{{(thing.name ? thing.name : thing.value)}}</router-link>
                         </li>
                     </ul>
                 </div>
@@ -44,17 +44,16 @@ export default {
                     }`
                 }
 
-                if (this.plural === 'Timeline') {
+                if (this.plural === 'Years') {
                     return gql `{
-                        timeline {
+                        years {
                             id
-                            val
-                            name
+                            value
                         }
                     }`
                 }
             },
-            update: data => data.people || data.timeline,
+            update: data => data.people || data.years,
             loadingKey: 'loading'
         }
     }
@@ -64,6 +63,5 @@ export default {
 <style>
 #thing {
     flex: 1;
-    border: 1px solid gold;
 }
 </style>

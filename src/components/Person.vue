@@ -6,9 +6,8 @@
             </div>
         </template>
         <template v-else>
-            <h1 class="f0 black mv4 ml3 w-100">{{person.name}}</h1>
-            <custom-link :things="[ person.birth ]" :name="'Year'" :prompt="'Born: '"></custom-link>
-            <custom-link :things="[ person.death ]" :name="'Year'" :prompt="'Died: '"></custom-link>
+            <h1 class="f0 black mv4 ml3 w-100">  {{person.name}}</h1>
+            <custom-link :things="[ person.birthYear ]" :name="'Year'" :prompt="'Born: '"></custom-link>
         </template>
     </div>
 </template>
@@ -22,12 +21,8 @@ query PersonQuery($id: ID!) {
     person(id: $id) {
         id
         name
-        birth {
-            name
-            id
-        }
-        death {
-            name
+        birthYear {
+            value
             id
         }
     }
@@ -48,9 +43,7 @@ export default {
             }
         }
     },
-    components: {
-        CustomLink
-    }
+    components: { CustomLink }
 }
 </script>
 

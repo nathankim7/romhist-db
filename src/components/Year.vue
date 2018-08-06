@@ -8,7 +8,6 @@
         <template v-else>
             <h1 class="f0 black mv4 ml3 w-100">{{year.name}}</h1>
             <custom-link :things="year.births" :name="'Person'" :prompt="'Born: '"></custom-link>
-            <custom-link :things="year.deaths" :name="'Person'" :prompt="'Died: '"></custom-link>
         </template>
     </div>
 </template>
@@ -21,12 +20,8 @@ const YEAR_QUERY = gql `
 query YearQuery($id: ID!) {
     year(id: $id) {
         id
-        name
+        value
         births {
-            name
-            id
-        }
-        deaths {
             name
             id
         }
@@ -47,9 +42,7 @@ export default {
             }
         }
     },
-    components: {
-        CustomLink
-    }
+    components: { CustomLink }
 }
 </script>
 
