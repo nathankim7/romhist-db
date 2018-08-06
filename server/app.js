@@ -1,7 +1,6 @@
 var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var path = require('path')
 const mongoose = require('mongoose')
 const { ApolloServer } = require('apollo-server-express')
 const { typeDefs, resolvers } = require('./schema')
@@ -19,13 +18,6 @@ var app = express();
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, './dist')))
-
-if (process.argv[2] && process.argv[2] === '-s') {
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + 'index.html'));
-  })
-}
 
 server.applyMiddleware({ app })
 
