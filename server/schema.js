@@ -15,14 +15,14 @@ input YearInput {
 
 type Person {
     name: String!
-    id: ID! @unique
+    id: ID!
     birthYear: Year
 }
 
 type Year {
     value: Int!
     name: String! 
-    id: ID! @unique
+    id: ID!
     births: [Person!]! 
 }
 
@@ -41,54 +41,51 @@ type Mutation {
 
 const resolvers = {
     Query: {
-        person: (root, args, ctx, info) => {
-            return Person.findById(args.id).populate('birthYear').exec().then(res => res)
+        person: async (root, args, ctx, info) => {
+            return await Person.findById(args.id).populate('birthYear').exec()
         },
-        year: (root, args, ctx, info) => {
-            return Year.findById(args.id).populate('births').exec().then(res => res)
+        year: async (root, args, ctx, info) => {
+            return await Year.findById(args.id).populate('births').exec()
         },
-        people: (root, args, ctx, info) => {
+        people: async (root, args, ctx, info) => {
             if (args.nameF) 
-                return Person.find({ name: new RegExp(args.nameF, 'i') }).then(res => res)
+                return await Person.find({ name: new RegExp(args.nameF, 'i') })
             else 
-                return Person.find({}).then(res => res)
+                return await Person.find({})
         },
-        years: (root, args, ctx, info) => {
+        years: async (root, args, ctx, info) => {
             if (args.nameF) 
-                return Year.find({ name: new RegExp(args.nameF, 'i') }).then(res => res)
+                return await Year.find({ name: new RegExp(args.nameF, 'i') })
             else 
-                return Year.find({}).then(res => res)
+                return await Year.find({})
         },
     },
     Mutation: {
-        createPerson: (root, args, ctx, info) => {
+        createPerson: async (root, args, ctx, info) => {
             const newPerson = new Person(args.input)
-            newPerson.save(err => { console.log(err) })
 
-            if (args.input.birthYear) 
-                return Year.findByIdAndUpdate(args.input.birthYear, { $push: { births: newPerson._id } }).exec().then(res => {
-                    return Person.populate(newPerson, { path: 'birthYear' }).then(res => res)
-                })
-            else
-                return newPerson
+            if (args.input.birthYear) {
+                newPerson.birthYear = args.input.birthYear
+                await Year.findByIdAndUpdate(args.input.birthYear, { births: newPerson._id }, {new: true}).exec()
+                await Person.populate(newPerson, { path: 'birthYear' })
+            }
+
+            newPerson.save(err => { console.log(err) })
+            return newPerson
         },
-        createYear: (root, args, ctx, info) => {
-            args.name = args.value + ''
+        createYear: async (root, args, ctx, info) => {
+            args.input.name = args.input.value + ''
             const newYear = new Year(args.input)
-            newYear.save(err => { console.log(err) })
 
             if (args.input.births) {
-                var completed = []
-
                 for (let p of args.input.births) 
-                    completed.push(Person.findByIdAndUpdate(p, { birthYear: newYear._id }))
+                    await Person.findByIdAndUpdate(p, { birthYear: newYear._id })
 
-                return Promise.all(completed).then((res) => { 
-                    return Year.populate(newYear, { path: 'births' }).then(res => res)
-                })
+                await Year.populate(newYear, { path: 'births' })
             }
-            else
-                return newYear
+            
+            newYear.save(err => { console.log(err) })
+            return newYear
         }
     }
 }
