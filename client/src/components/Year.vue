@@ -8,6 +8,8 @@
         <template v-else>
             <h1 class="f0 black mv4 ml3 w-100">{{year.name}}</h1>
             <custom-link :things="year.births" :name="'Person'" :prompt="'Born: '"></custom-link>
+            <custom-link :things="year.deaths" :name="'Person'" :prompt="'Died: '"></custom-link>
+            <custom-link :things="year.battles" :name="'Battle'" :prompt="'Battles: '"></custom-link>
         </template>
     </div>
 </template>
@@ -22,6 +24,14 @@ query YearQuery($id: ID!) {
         id
         value
         births {
+            name
+            id
+        }
+        deaths {
+            name
+            id
+        }
+        battles {
             name
             id
         }

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import ListTemplate from './components/ListTemplate.vue'
 import Person from './components/Person.vue'
 import Year from './components/Year.vue'
+import Battle from './components/Battle.vue'
 import LandingPage from './components/LandingPage.vue'
 import ResultsPage from './components/ResultsPage.vue'
 
@@ -48,6 +49,18 @@ export default new Router({
           props: true
         }
       ]
+    },
+    {
+      path: '/battles',
+      name: 'Battles',
+      component: ListTemplate,
+      props: { single: 'Battle', plural: 'Battles' },
+      children: [{
+        path: 'battle/:id',
+        name: 'Battle',
+        component: Battle,
+        props: true
+      }]
     }
   ]
 })

@@ -6,11 +6,11 @@
             </div>
         </template>
         <template v-else>
-            <div class="flex h-100">
+            <div class="flex h-100 pl3">
                 <div class="h-100 pr3">
                     <h1 class="mt4 mb3">{{plural}}</h1>
                     <ul class="pl3 mv3">
-                        <li v-for="thing in things" :key="thing.id">
+                        <li v-for="thing in sorted" :key="thing.id">
                             <router-link :to="{ name: single, params: { id: thing.id } }" class="f3 lh-copy link black-60">{{(thing.name ? thing.name : thing.value)}}</router-link>
                         </li>
                     </ul>
@@ -28,10 +28,12 @@ import gql from 'graphql-tag'
 
 export default {
     props: ['plural', 'single'],
-    data: () => ({
-        things: {},
-        loading: 0
-    }),
+    data: function () {
+        return {
+            things: {},
+            loading: 0
+        }
+    },
     apollo: {
         things: {
             query () {
@@ -48,13 +50,31 @@ export default {
                     return gql `{
                         years {
                             id
+                            name
                             value
                         }
                     }`
                 }
+
+                if (this.plural === 'Battles') {
+                    return gql`{
+                        battles {
+                            id
+                            name
+                        }
+                    }`
+                }
             },
-            update: data => data.people || data.years,
+            update: data => data.people || data.years || data.battles,
             loadingKey: 'loading'
+        }
+    },
+    computed: {
+        sorted: function () {
+            if (this.plural === 'Years')
+                return this.things.sort((a, b) => a.value - b.value)
+
+            return this.things.sort((a, b) => (a.name < b.name ? -1 : 1))
         }
     }
 }

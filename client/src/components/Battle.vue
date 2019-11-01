@@ -1,15 +1,15 @@
 <template>
-    <div class="person">
+    <div class="battle">
         <template v-if="loading > 0">
             <div className="flex w-100 h-100 items-center justify-center pt7">
                 <div>Loading...</div>
             </div>
         </template>
         <template v-else>
-            <h1 class="f0 black mv4 ml3 w-100">  {{person.name}}</h1>
-            <custom-link :things="[ person.birthYear ]" :name="'Year'" :prompt="'Born: '"></custom-link>
-            <custom-link :things="[ person.deathYear ]" :name="'Year'" :prompt="'Died: '"></custom-link>
-            <custom-link :things="person.battles" :name="'Battle'" :prompt="'Battles: '"></custom-link>
+            <h1 class="f0 black mv4 ml3 w-100">{{battle.name}}</h1>
+            <custom-link :things="[battle.year]" :name="'Year'" :prompt="'Year: '"></custom-link>
+            <custom-link :things="battle.attackers" :name="'Person'" :prompt="'Attackers: '"></custom-link>
+            <custom-link :things="battle.defenders" :name="'Person'" :prompt="'Defenders: '"></custom-link>
         </template>
     </div>
 </template>
@@ -18,20 +18,20 @@
 import gql from 'graphql-tag'
 import CustomLink from './CustomLink.vue'
 
-const PERSON_QUERY = gql `
-query PersonQuery($id: ID!) {
-    person(id: $id) {
+const BATTLE_QUERY = gql `
+query BattleQuery($id: ID!) {
+    battle(id: $id) {
         id
         name
-        birthYear {
+        year {
             name
             id
         }
-        deathYear {
+        attackers {
             name
             id
         }
-        battles {
+        defenders {
             name
             id
         }
@@ -39,17 +39,16 @@ query PersonQuery($id: ID!) {
 }`
 
 export default {
-    props: ['id'],
     data: () => ({
-        person: {},
+        battle: {},
         loading: 0
     }),
     apollo: {
-        person: {
-            query: PERSON_QUERY,
+        battle: {
+            query: BATTLE_QUERY,
             loadingKey: 'loading',
             variables() {
-                return { id: this.id }
+                return { id: this.$route.params.id }
             }
         }
     },

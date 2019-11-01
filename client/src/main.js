@@ -7,7 +7,7 @@ import VueApollo from 'vue-apollo'
 import router from './router'
 
 const httpLink = new HttpLink({
-    uri: 'https://romhist-server-dgxtsrqcxs.now.sh/graphql'
+    uri: 'http://localhost:3000/graphql'//'https://romhist-server-dgxtsrqcxs.now.sh/graphql'
 })
 
 const apolloClient = new ApolloClient({

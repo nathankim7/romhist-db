@@ -4,6 +4,7 @@
       <router-link v-bind:to="'/'" exact class="link dim black b f6 f5-ns dib mr3 hover-purple" title="Landing">Search</router-link>
       <router-link v-bind:to="'/people'" exact class="link dim gray f6 f5-ns dib mr3 hover-purple" title="People">People</router-link>
       <router-link v-bind:to="'/timeline'" exact class="link dim gray f6 f5-ns dib mr3 hover-purple" title="Timeline">Timeline</router-link>
+      <router-link v-bind:to="'/battles'" exact class="link dim gray f6 f5-ns dib mr3 hover-purple" title="Battles">Battles</router-link>
     </nav>
     <div id="main" class="fl w-100 ph3 bt b--black-10">
       <router-view/>
